@@ -1,0 +1,69 @@
+<template>
+    <!-- Show Sales Office card when not showing claim property view -->
+    <template if:false={showClaimProperty}>
+        <lightning-card title="Sales Office">
+            <lightning-layout horizontal-align="center">
+                <lightning-layout-item>
+                    <lightning-input label="Sales Office" placeholder="Place" onchange={salesOffice}></lightning-input>
+                </lightning-layout-item>
+            </lightning-layout>
+            <template if:true={placeData.Name}>
+                <lightning-layout horizontal-align="center">
+                    <lightning-layout-item class="slds-m-top_medium">
+                        <strong>Sales Office Name:</strong> {placeData.Name}
+                    </lightning-layout-item>
+                </lightning-layout>
+                <lightning-layout horizontal-align="center">
+                    <lightning-layout-item class="slds-m-bottom_medium">
+                        <strong>Year To Date Sales: </strong> 
+                        <lightning-formatted-number 
+                            value={placeData.Year_to_Date_Sales__c}>
+                        </lightning-formatted-number>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+
+            <template if:true={error}>
+                <lightning-layout horizontal-align="center">
+                    <lightning-layout-item class="slds-m-top_medium slds-text-color_error">
+                        Error: {error}
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+
+            <template if:false={placeData.Name}>
+                <template if:false={error}>
+                    <lightning-layout horizontal-align="center">
+                        <lightning-layout-item class="slds-m-top_medium slds-text-align_center">
+                            <p>Enter a sales office name to search</p>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </template>
+            </template>
+
+            <lightning-layout horizontal-align="center">
+                <lightning-layout-item class="slds-m-right_medium ">
+                    <lightning-button label="Edit" variant="brand"></lightning-button>
+                </lightning-layout-item>
+                <lightning-layout-item class="slds-m-right_medium">
+                    <lightning-button label="Delete" variant="brand"></lightning-button>
+                </lightning-layout-item>
+                <lightning-layout-item class="slds-m-right_medium">
+                    <lightning-button label="Clone" variant="brand"></lightning-button>
+                </lightning-layout-item>
+                <lightning-layout-item class="slds-m-bottom_large">
+                    <lightning-button label="Claim Property" variant="brand" onclick={handleClaimProperty}></lightning-button>
+                </lightning-layout-item>
+            </lightning-layout>
+
+        </lightning-card>
+    </template>
+
+    <!-- Show Available Properties component when Claim Property is clicked -->
+    <template if:true={showClaimProperty}>
+        <c-avilable-properties property-city={place}></c-avilable-properties>
+        <div class="slds-m-top_medium slds-text-align_center">
+            <lightning-button label="Back to Sales Office" variant="neutral" onclick={handleBackToSalesOffice}></lightning-button>
+        </div>
+    </template>
+</template>

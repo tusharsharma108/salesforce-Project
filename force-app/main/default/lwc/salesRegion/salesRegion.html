@@ -1,0 +1,38 @@
+<template>
+    <p><strong>*Only for Regional Manager</strong></p>
+    <template if:false={showApproveProperties}>
+    <lightning-card title="Sales Region">
+        <template if:true={regionalManagerData}>
+            <template for:each={regionalManagerData} for:item="region">
+                <lightning-layout horizontal-align="center" key={region.Id}>
+                    <lightning-layout-item class="slds-m-bottom_large">
+                        <p><strong>Sales Region Name</strong> - {region.Name}</p>
+                        <p><strong>Regional Manager</strong> - {region.Regional_Manager__r.Name}</p>  
+                    </lightning-layout-item>        
+                </lightning-layout>
+            </template>
+        </template>
+        <lightning-layout horizontal-align="center">
+            <lightning-layout-item class="slds-m-right_medium">
+                <lightning-button label="Edit" variant="brand"></lightning-button>
+            </lightning-layout-item>
+            <lightning-layout-item class="slds-m-right_medium">
+                <lightning-button label="Delete" variant="brand"></lightning-button>
+            </lightning-layout-item>
+            <lightning-layout-item class="slds-m-right_medium">
+                <lightning-button label="Clone" variant="brand"></lightning-button>
+            </lightning-layout-item>
+            <lightning-layout-item class="slds-m-bottom_large">
+                <lightning-button label="Approve Commissions" variant="brand" onclick={handleApproveCommission}></lightning-button>
+            </lightning-layout-item>        
+        </lightning-layout>
+    </lightning-card>
+    </template>
+
+    <template if:true={showApproveProperties}>
+        <c-approve-properties sales-region-id={selectedRegionId}></c-approve-properties>
+        <div class="slds-m-top_medium slds-text-align_center">
+            <lightning-button label="Back to Sales Region" variant="neutral" onclick={handleBackToSalesRegion}></lightning-button>
+        </div>
+    </template>
+</template>

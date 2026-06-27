@@ -1,0 +1,29 @@
+<template>
+    <lightning-card title="Approve Commissions" icon-name="custom:custom85">
+        <div class="slds-m-around_medium">
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col">
+                    <strong>My YTD Sales:</strong> {agentYTDSales}
+                </div>
+            </div>
+            <!-- Data Table with Lazy Loading -->
+            <lightning-datatable
+                key-field="Id"
+                data={propertyDetails}
+                columns={columns}
+                selected-rows={selectedRowIds}
+                onrowselection={handleRowSelection}
+                oncellchange={handleCellChange}
+                enable-infinite-loading={enableInfiniteLoading}
+                onloadmore={handleLoadMore}>
+            </lightning-datatable>
+
+            <!-- Action Buttons -->
+            <div class="slds-m-top_large">
+                <lightning-button variant="brand" label="Approve Commissions" onclick={handleApproveCommissions}></lightning-button>
+                <lightning-button variant="brand" label="Approve Commission and Continue" onclick={handleApproveCommissionContinue}></lightning-button>
+                <lightning-button label="Cancel" onclick={cancel} class="slds-m-left_small"></lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+</template>
