@@ -14,7 +14,6 @@ export default class SalesOffice extends LightningElement {
     @wire(getPlace, {place: '$place'})
     wiredPlace(response){
         if(response.data){
-            // The query returns an array, but we want the first result
             this.placeData = response.data.length > 0 ? response.data[0] : {};
             this.error = undefined;
         }else if(response.error){
@@ -31,7 +30,6 @@ export default class SalesOffice extends LightningElement {
     }
 
     handleBackToSalesOffice() {
-        // Hide the avilableProperties component and show sales office
         this.showClaimProperty = false;
     }
 }
