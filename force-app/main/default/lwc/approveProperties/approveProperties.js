@@ -19,14 +19,13 @@ export default class ApproveProperties extends LightningElement {
     @track propertyDetails = [];
     @track selectedRowIds = [];
     wiredPropertyResult;
-    changedCommissions = []; // Store changed agent commissions separately
+    changedCommissions = [];
     draftValues = [];
     
     @wire(fetchProperty, {regionId: '$salesRegionId'})
     wiredProperty(result){
         this.wiredPropertyResult = result;
         if(result.data){
-            // Flatten the data to include relationship field values
             this.propertyDetails = result.data.map(property => {
                 return {
                     ...property,
@@ -47,58 +46,43 @@ export default class ApproveProperties extends LightningElement {
 
     handleCellChange(event) {
         const updatedFields = event.detail.draftValues;
-        
-        // Update the draft values
         this.draftValues = updatedFields;
-        
-        // Store changed commissions in separate variable
         this.changedCommissions = updatedFields.map(draft => {
             return {
                 Id: draft.Id,
                 Agent_Commission_Percentage__c: draft.Agent_Commission_Percentage__c
             };
         });
-        
-        // Automatically save the changes
         this.saveCommissionChanges();
     }
-
+    
     saveCommissionChanges() {
-        // Check if there are any changes to save
         if (this.changedCommissions.length === 0) {
             return;
         }
-
-        // Call Apex method to update records using the stored changedCommissions
         updatePropertyCommission({ properties: this.changedCommissions })
             .then(() => {
                 this.showToast('Success', 'Agent Commission updated successfully', 'success');
-                
-                // Clear draft values and changed commissions
                 this.draftValues = [];
                 this.changedCommissions = [];
-                
-                // Refresh the data
                 return refreshApex(this.wiredPropertyResult);
             })
             .catch(error => {
                 this.showToast('Error', error.body ? error.body.message : 'Error updating commission', 'error');
             });
     }
-
+    
     handleApproveCommissions(){
         if(this.selectedRowIds.length === 0) {
             this.showToast('Warning', 'Please select at least one property to approve', 'warning');
             return;
         }
-
+        
         approveMultipleProperties({ propertyIds: this.selectedRowIds })
             .then(result => {
                 if(result.startsWith('Success')) {
                     this.showToast('Success', result, 'success');
-                    // Clear selection
                     this.selectedRowIds = [];
-                    // Refresh the wire service
                     return refreshApex(this.wiredPropertyResult);
                 } else {
                     this.showToast('Error', result, 'error');
@@ -108,7 +92,7 @@ export default class ApproveProperties extends LightningElement {
                 this.showToast('Error', error.body ? error.body.message : 'Unknown error occurred', 'error');
             });
     }
-
+    
     showToast(title, message, variant) {
         const event = new ShowToastEvent({
             title: title,
