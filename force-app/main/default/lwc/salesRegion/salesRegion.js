@@ -6,7 +6,7 @@ export default class SalesRegion extends LightningElement {
     selectedRegionId = '';
     
     handleApproveCommission(){
-        // Get the first region's ID (or you could modify to handle multiple regions)
+        
         if(this.regionalManagerData && this.regionalManagerData.length > 0){
             this.selectedRegionId = this.regionalManagerData[0].Id;
             this.showApproveProperties = true;
