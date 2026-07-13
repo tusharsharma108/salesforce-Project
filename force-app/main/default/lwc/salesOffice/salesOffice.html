@@ -1,5 +1,4 @@
 <template>
-    <!-- Show Sales Office card when not showing claim property view -->
     <template if:false={showClaimProperty}>
         <lightning-card title="Sales Office">
             <lightning-layout horizontal-align="center">
@@ -59,7 +58,6 @@
         </lightning-card>
     </template>
 
-    <!-- Show Available Properties component when Claim Property is clicked -->
     <template if:true={showClaimProperty}>
         <c-avilable-properties property-city={place}></c-avilable-properties>
         <div class="slds-m-top_medium slds-text-align_center">
