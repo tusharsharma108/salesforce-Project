@@ -16,21 +16,13 @@ export default class AvilableProperties extends LightningElement {
 
     @track propertyDetails = [];
     @track selectedRowIds = [];
-    
-    // Public property to receive city from parent component
     @api propertyCity = '';
-    
-    // Header properties
     propertiesClaimedCount = 0;
     agentYTDSales = '$0';
     agentYTDCommissions = '$0';
-    
-    // Infinite loading
     enableInfiniteLoading = false;
-    
     error;
 
-    // Getter for salesOfficeName to display dynamic place
     get salesOfficeName() {
         return this.propertyCity ? `Available Properties - ${this.propertyCity}` : 'Available Properties';
     }
@@ -55,7 +47,6 @@ export default class AvilableProperties extends LightningElement {
     }
 
     handleLoadMore(event) {
-        // Implement pagination logic here if needed
         event.target.isLoading = false;
     }
 
@@ -65,12 +56,10 @@ export default class AvilableProperties extends LightningElement {
             return;
         }
         
-        // Call Apex to claim properties
         claimProperties({ propertyIds: this.selectedRowIds })
             .then(result => {
                 this.showToast('Success', `Successfully claimed ${this.selectedRowIds.length} propert${this.selectedRowIds.length > 1 ? 'ies' : 'y'}`, 'success');
                 this.selectedRowIds = [];
-                // Refresh the property list
                 return refreshApex(this.wiredPropertyResult);
             })
             .catch(error => {
@@ -81,11 +70,9 @@ export default class AvilableProperties extends LightningElement {
 
     claimAndContinue() {
         this.claimProperties();
-        // Add continue logic here
     }
 
     cancel() {
-        // Clear selections
         this.selectedRowIds = [];
     }
 
